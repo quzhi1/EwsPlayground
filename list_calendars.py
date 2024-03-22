@@ -38,9 +38,9 @@ find_folder_result = SingleFolderQuerySet(
 print("Find folder by id result:", find_folder_result.name)
 
 # Rename calendar
-# find_folder_result.name = "python created renamed"
-# find_folder_result.save()
-# print("Folder ranamed")
+find_folder_result.name = "python created renamed"
+find_folder_result.save(update_fields=['name'])
+print("Folder renamed")
 
 # Delete calendar
 find_folder_result.delete()
