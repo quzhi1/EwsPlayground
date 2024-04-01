@@ -1,2 +1,4 @@
 exchangelib==5.2.0
-lxml == 5.1.0
+lxml==5.1.0
+gunicorn==21.2.0
+Flask==3.0.2
