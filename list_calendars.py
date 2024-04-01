@@ -1,6 +1,7 @@
 from exchangelib import Credentials, Account, Configuration, Build, Version, Folder
 from exchangelib.protocol import Protocol
-from exchangelib.folders import SingleFolderQuerySet
+from exchangelib.folders import SingleFolderQuerySet, Calendar
+from exchangelib.properties import DistinguishedFolderId
 import os
 
 exchange_server = 'east.EXCH092.serverdata.net'
@@ -36,6 +37,15 @@ find_folder_result = SingleFolderQuerySet(
     folder=account.calendar,
 ).get(id=python_created_calendar_id)
 print("Find folder by id result:", find_folder_result.name)
+
+# Find calendar by distinguished folder id
+find_folder_by_distinguished_folder_id_result = SingleFolderQuerySet(
+    account=account,
+    folder=DistinguishedFolderId(
+        id=Calendar.DISTINGUISHED_FOLDER_ID,
+    ),
+).resolve()
+print("Find folder by distinguished folder id result:", find_folder_by_distinguished_folder_id_result.name)
 
 # Rename calendar
 find_folder_result.name = "python created renamed"
