@@ -1,5 +1,4 @@
-from exchangelib import Credentials, Account, Configuration, Build, Version, Folder
-from exchangelib.protocol import Protocol
+from exchangelib import Credentials, Account, Configuration, Folder
 from exchangelib.folders import SingleFolderQuerySet, Calendar
 from exchangelib.properties import DistinguishedFolderId
 import os
