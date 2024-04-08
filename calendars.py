@@ -28,7 +28,7 @@ if python_created_calendar_id is None:
     new_calendar = Folder(parent=account.calendar, name="python created", folder_class='IPF.Appointment')
     new_calendar.save()
     python_created_calendar_id = new_calendar.id
-    print("Crated calendar, name:", new_calendar.name, "ID:", new_calendar.id)
+    print("Created calendar, name:", new_calendar.name, "ID:", new_calendar.id)
 
 # Find calendar by id
 find_folder_result = SingleFolderQuerySet(
