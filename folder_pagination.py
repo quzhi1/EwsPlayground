@@ -48,7 +48,7 @@ while True:
     if not folders:
         break
     for folder in folders:
-        print("\t\t" + folder.name)
+        print("\t\t" + folder.name + ": " + folder.id)
 
 # List all secondary calendars
 print("Secondary calendars:")
@@ -61,4 +61,4 @@ while True:
     if not folders:
         break
     for folder in folders:
-        print("\t\t" + folder.name)
+        print("\t\t" + folder.name + ": " + folder.id)
