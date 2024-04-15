@@ -44,7 +44,12 @@ find_folder_by_distinguished_folder_id_result = SingleFolderQuerySet(
         id=Calendar.DISTINGUISHED_FOLDER_ID,
     ),
 ).resolve()
-print("Find folder by distinguished folder id result:", find_folder_by_distinguished_folder_id_result.name)
+print(
+    "Find folder by distinguished folder id result:",
+    find_folder_by_distinguished_folder_id_result.name,
+    "folder_class:",
+    find_folder_by_distinguished_folder_id_result.folder_class,
+)
 
 # Rename calendar
 find_folder_result.name = "python created renamed"
