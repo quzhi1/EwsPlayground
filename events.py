@@ -17,8 +17,6 @@ end = EWSDateTime(end_time.year, end_time.month, end_time.day, tzinfo=EWSTimeZon
 
 # Query for primary calendar events
 calendar_items = account.calendar.view(start=start, end=end)
-
-# Print the events
 print("Primary calendar events:")
 for item in calendar_items:
     if isinstance(item, CalendarItem):
@@ -36,3 +34,22 @@ print("Secondary calendar events:")
 for item in calendar_items:
     if isinstance(item, CalendarItem):
         print("subject:", item.subject, "start:", item.start)
+
+# Query for free-busy information
+attendee_type = "Organizer" # Can be "Optional", "Organizer", "Required", "Resource", "Room"
+accounts = [
+    ("test@nylas.info", "Organizer", False),
+    ("test@nylas.info", "Required", False),
+    ("test@nylas.info", "Optional", False),
+    ("staging_test@nylas.info", "Organizer", False),
+    ("staging_test@nylas.info", "Required", False),
+    ("staging_test@nylas.info", "Optional", False),
+]
+free_busy = account.protocol.get_free_busy_info(accounts=accounts, start=start, end=end)
+print("Free-busy information:")
+for busy_info in free_busy:
+    print("working_hours:", busy_info.working_hours)
+    if busy_info.calendar_events is None:
+        continue
+    for event in busy_info.calendar_events:
+        print("busy_type:", event.busy_type, "start:", event.start)
