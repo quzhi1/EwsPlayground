@@ -20,6 +20,7 @@ calendar_items = account.calendar.view(start=start, end=end)
 print("Primary calendar events:")
 for item in calendar_items:
     if isinstance(item, CalendarItem):
+        item = account.calendar.get(id=item.id)
         print("subject:", item.subject, "start:", item.start, "id:", item.id)
 
 # Find a secondary calendar
@@ -33,6 +34,7 @@ calendar_items = secondary_calendar.view(start=start, end=end)
 print("Secondary calendar events:")
 for item in calendar_items:
     if isinstance(item, CalendarItem):
+        item = secondary_calendar.get(id=item.id)
         print("subject:", item.subject, "start:", item.start, "id:", item.id)
 
 # Query for free-busy information
