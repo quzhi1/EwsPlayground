@@ -38,16 +38,12 @@ for item in calendar_items:
         print("subject:", item.subject, "start:", item.start, "id:", item.id)
 
 # Query for free-busy information
-attendee_type = "Organizer" # Can be "Optional", "Organizer", "Required", "Resource", "Room"
+# attendee_type can be "Optional", "Organizer", "Required", "Resource", "Room"
 accounts = [
-    ("test@nylas.info", "Organizer", False),
     ("test@nylas.info", "Required", False),
-    ("test@nylas.info", "Optional", False),
-    ("staging_test@nylas.info", "Organizer", False),
     ("staging_test@nylas.info", "Required", False),
-    ("staging_test@nylas.info", "Optional", False),
 ]
-free_busy = account.protocol.get_free_busy_info(accounts=accounts, start=start, end=end)
+free_busy = account.protocol.get_free_busy_info(accounts=accounts, start=start, end=end, merged_free_busy_interval=30)
 print("Free-busy information:")
 for busy_info in free_busy:
     print("working_hours:", busy_info.working_hours)
