@@ -11,6 +11,8 @@ config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=username,
                   config=config, access_type='delegate')
 
+print("exchange version: ", account.version)
+
 distinguished_folders = [
     cls(
         _distinguished_id=DistinguishedFolderId(
