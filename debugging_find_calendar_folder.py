@@ -1,5 +1,5 @@
-from exchangelib import Credentials, Account, Configuration, Folder
-from exchangelib.folders import SingleFolderQuerySet, Calendar
+from exchangelib import Credentials, Account, Configuration, Mailbox
+from exchangelib.folders import SingleFolderQuerySet
 from exchangelib.properties import DistinguishedFolderId
 import os
 
@@ -15,6 +15,9 @@ folder = SingleFolderQuerySet(
     account=account,
     folder=DistinguishedFolderId(
         id='calendar',
+        mailbox=Mailbox(
+            email_address=account.primary_smtp_address,
+        ),
     ),
 ).resolve()
 print("folder name:", folder.name)
