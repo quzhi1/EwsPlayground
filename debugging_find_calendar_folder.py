@@ -1,4 +1,4 @@
-from exchangelib import Credentials, Account, Configuration, Mailbox
+from exchangelib import Credentials, Account, Configuration, Mailbox, Folder
 from exchangelib.folders import SingleFolderQuerySet
 from exchangelib.properties import DistinguishedFolderId
 import os
@@ -13,11 +13,12 @@ account = Account(primary_smtp_address=username,
 
 folder = SingleFolderQuerySet(
     account=account,
-    folder=DistinguishedFolderId(
-        id='calendar',
-        mailbox=Mailbox(
-            email_address=account.primary_smtp_address,
-        ),
+    folder=Folder(
+        root=account.root,
+        _distinguished_id=DistinguishedFolderId(
+            id='calendar',
+            mailbox=Mailbox(email_address=account.primary_smtp_address),
+        )
     ),
 ).resolve()
 print("folder name:", folder.name)
