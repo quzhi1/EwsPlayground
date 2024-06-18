@@ -1,4 +1,4 @@
-git+https://github.com/ecederstrand/exchangelib.git@17ea29a6569eb7c6dcdcb1f81c9ba3b017b9f2d9
+git+https://github.com/ecederstrand/exchangelib.git@5fa602e49c01a1953942c6228d75f45ffc3020f6
 lxml==5.1.0
 gunicorn==21.2.0
 Flask==3.0.2
