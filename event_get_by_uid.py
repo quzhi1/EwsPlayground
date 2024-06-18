@@ -1,4 +1,4 @@
-from exchangelib import Credentials, Account, Configuration, EWSDateTime, EWSTimeZone, CalendarItem
+from exchangelib import Credentials, Account, Configuration, CalendarItem
 from exchangelib.properties import UID
 from exchangelib.extended_properties import ExtendedProperty
 import os
