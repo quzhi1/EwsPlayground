@@ -1,10 +1,10 @@
 from exchangelib import Credentials, autodiscover
 import os
 
-# username = os.getenv('EWS_OVH_USERNAME')
-# password = os.getenv('EWS_OVH_PASSWORD')
-username = os.getenv('INTERMEDIA_EMAIL_ADDRESS')
-password = os.getenv('INTERMEDIA_PASSWORD')
+username = os.getenv('EWS_OVH_USERNAME')
+password = os.getenv('EWS_OVH_PASSWORD')
+# username = os.getenv('INTERMEDIA_EMAIL_ADDRESS')
+# password = os.getenv('INTERMEDIA_PASSWORD')
 cred = Credentials(username=username, password=password)
 try:
     result, protocol = autodiscover.discover(username, cred)
