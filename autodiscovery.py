@@ -12,6 +12,8 @@ try:
     print("smtp_address:", result.user_settings['auto_discover_smtp_address'])
     print("ews_supported_schemas:", result.user_settings['ews_supported_schemas'])
     print("service_endpoint:", protocol.config.service_endpoint)
-    print("version:", protocol.config.version)
+    print("version.build:", protocol.config.version.build)
+    print("version.api_version:", protocol.config.version.api_version)
+    print("version.fullname:", protocol.config.version.fullname)
 except Exception as e:
     print(e)
