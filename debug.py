@@ -1,4 +1,4 @@
-from exchangelib import Credentials, Account, Configuration
+from exchangelib import Credentials, Account, Configuration, Version, Build
 import os
 import logging
 
@@ -13,9 +13,30 @@ logging.getLogger('requests').setLevel(logging.DEBUG)
 exchange_server = 'zimbra.immo-facile.com'
 username = os.getenv('EWS_IMMO_USERNAME')
 password = os.getenv('EWS_IMMO_PASSWORD')
-credentials = Credentials(username=username, password=password)
-config = Configuration(server=exchange_server, credentials=credentials)
-account = Account(primary_smtp_address=username,
-                  config=config, access_type='delegate')
+credentials = Credentials(
+    username=username,
+    password=password,
+)
+config = Configuration(
+    server=exchange_server,
+    credentials=credentials,
+    # Add version hint to skip version guessing routines
+    version=Version(
+        api_version="Version366750107",
+        build=Build(
+            major_version=-1102247790,
+            minor_version=-801581130,
+            major_build=-1919954918,
+            minor_build=-880192749,
+        ),
+    ),
+)
+account = Account(
+    primary_smtp_address=username,
+    config=config,
+    access_type='delegate',
+    # Disable autodiscover to skip version guessing routines
+    autodiscover=False,
+)
 
 print("Primary Calendar Name:", account.calendar.name)
