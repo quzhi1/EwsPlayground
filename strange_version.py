@@ -1,4 +1,5 @@
-from exchangelib import Credentials, Account, Configuration, Version, Build
+from exchangelib import Credentials, Account, Configuration, Version, Build as _Build
+
 import os
 import logging
 
@@ -6,6 +7,14 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logging.getLogger('exchangelib').setLevel(logging.DEBUG)
 logging.getLogger('requests').setLevel(logging.DEBUG)
+
+
+class Build(_Build):
+    def __init__(self, *args, **kwargs):
+        try:
+            super().__init__(*args, **kwargs)
+        except ValueError:
+            pass
 
 # exchange_server = 'ex.mail.ovh.ca'
 # username = os.getenv('EWS_OVH_USERNAME')
