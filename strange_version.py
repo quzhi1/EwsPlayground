@@ -48,4 +48,5 @@ account = Account(
     autodiscover=False,
 )
 
-print("Primary Calendar Name:", account.calendar.name)
+# print("Primary Calendar Name:", account.calendar.name)
+print("Primary Calendar Name:", account.inbox.name)
