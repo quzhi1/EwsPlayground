@@ -12,4 +12,6 @@ config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=username,
                   config=config, access_type='delegate')
 
-print(account.root / 'AllItems')
+# print(account.root / 'AllItems')
+for folder in account.root.walk():
+    print(folder.name)
