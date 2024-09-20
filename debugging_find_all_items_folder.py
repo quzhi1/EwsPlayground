@@ -13,5 +13,7 @@ account = Account(primary_smtp_address=username,
                   config=config, access_type='delegate')
 
 # print(account.root / 'AllItems')
-for folder in account.root.walk():
-    print(folder.name)
+for folder in account.msg_folder_root.walk():
+    print('name:', folder.name)
+    print('container_class:', folder.CONTAINER_CLASS)
+    print('id:', folder.id)
