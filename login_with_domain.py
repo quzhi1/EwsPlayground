@@ -1,5 +1,4 @@
 from exchangelib import Credentials, Account, Configuration
-from exchangelib.folders import FolderCollection, SingleFolderQuerySet
 import os
 
 exchange_server = 'ews.thementornetwork.com'
