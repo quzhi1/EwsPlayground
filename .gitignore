@@ -26,3 +26,6 @@ __pycache__/
 
 # DS_Store
 .DS_Store
+
+# Sensitive data
+pouya_auth_output.txt
