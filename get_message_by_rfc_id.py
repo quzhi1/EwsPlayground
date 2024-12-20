@@ -4,14 +4,17 @@ from exchangelib.folders import FolderCollection, SingleFolderQuerySet
 from exchangelib.queryset import QuerySet
 import os
 
-exchange_server = 'exchange.homewatchcaregivers.com'
-username = os.getenv('HOMEWATCHCAREGIVERS_EMAIL_ADDRESS')
-password = os.getenv('HOMEWATCHCAREGIVERS_PASSWORD')
+# exchange_server = 'exchange.homewatchcaregivers.com'
+# username = os.getenv('HOMEWATCHCAREGIVERS_EMAIL_ADDRESS')
+# password = os.getenv('HOMEWATCHCAREGIVERS_PASSWORD')
+exchange_server = 'webmail.wolve.com'
+username = os.getenv('WOLVE_EMAIL_ADDRESS')
+password = os.getenv('WOLVE_PASSWORD')
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=username,
                   config=config, access_type='delegate')
-message_id = '<!&!AAAAAAAAAAAYAAAAAAAAANnegKUYmgNFsvVHExaDAm7CgAAAGAAAAAAAAADZ3oClGJoDRbL1RxMWgwJuxII/AAEAAAAA@globalattendeehub.com>'
+message_id = '<2d71024a-0731-4fd4-9b4d-10a9176dff8f@exmbcl6.wolve.com>'
 
 def main():
     messages = get_messages_with_same_id(account, message_id)
