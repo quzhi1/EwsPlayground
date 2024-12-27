@@ -1,5 +1,6 @@
-from exchangelib import Credentials, Account, Configuration, Folder
+from exchangelib import Credentials, Account, Configuration
 from exchangelib.items import Message
+from exchangelib.folders import AllItems
 import os
 
 ALL_ITEMS_FOLDER = 'AllItems'
@@ -15,7 +16,7 @@ def main():
     config = Configuration(server=exchange_server, credentials=credentials)
     account = Account(primary_smtp_address=email, config=config, access_type='delegate')
 
-    all_items_folder = find_all_items_folder(account)
+    all_items_folder = account.root.get_default_folder(AllItems)
     messages = all_items_folder.all().order_by('-datetime_received')
     num_messages = messages.count()
     conversation_ids = []
@@ -38,24 +39,6 @@ def main():
     # conversation_ids = [encode_str(c) for c in conversation_ids]
     next_offset = offset + i if num_messages > offset + i else None
     print(conversation_ids, next_offset)
-
-def find_all_items_folder(account: Account) -> Folder:
-    """
-    Function to find and return the 'AllItems' folder under the root folder.
-    
-    :param account: The exchangelib Account object to search in.
-    :return: The 'AllItems' folder if it exists, otherwise None.
-    """
-    # Walk through all subfolders under root and check for "AllItems"
-    try:
-        for folder in account.root.walk():
-            if folder.name == ALL_ITEMS_FOLDER:
-                return folder
-    except Exception:
-        return None
-
-    # Return None if the folder does not exist
-    return None
 
 def has_message_id(item: Message) -> bool:
     try:
