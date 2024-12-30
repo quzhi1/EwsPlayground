@@ -45,9 +45,12 @@ NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME = [
 
 def main():
     all_items_folder = account.root.get_default_folder(AllItems)
-    messages = all_items_folder.all().order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    messages = all_items_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    # messages = all_items_folder.all().order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
 
     for message in messages[0:10]:
+        print('item_class:', message.item_class)
+        print('object_type:', type(message).__name__)
         print('subject:', message.subject)
         print('datetime_received:', message.datetime_received)
         print('is_draft', message.is_draft)
