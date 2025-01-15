@@ -2,10 +2,10 @@ from exchangelib import Credentials, Account, Configuration
 from exchangelib.folders import AllItems
 import os
 
-exchange_server = 'mail.micloud19.com'
-username = os.getenv('MICLOUD_EMAIL_ADDRESS')
-email = os.getenv('MICLOUD_EMAIL_ADDRESS')
-password = os.getenv('MICLOUD_PASSWORD')
+exchange_server = 'owa.retirement.org'
+username = os.getenv('RETIREMENT_USERNAME')
+email = os.getenv('RETIREMENT_EMAIL_ADDRESS')
+password = os.getenv('RETIREMENT_PASSWORD')
 
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
