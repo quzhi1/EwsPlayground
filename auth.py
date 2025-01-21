@@ -1,5 +1,14 @@
-from exchangelib import Credentials, Account, Configuration, NTLM
+from exchangelib import Credentials, Account, Configuration
 import os
+import warnings
+from urllib3.exceptions import InsecureRequestWarning
+from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter
+
+# Suppress only the InsecureRequestWarning
+warnings.simplefilter("ignore", InsecureRequestWarning)
+
+# Set the HTTP adapter to use the custom RootCAAdapter
+BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
 
 # exchange_server = 'autodiscover.rosellilaw.com'
 # email = os.getenv('ROSELLILAW_EMAIL_ADDRESS')
