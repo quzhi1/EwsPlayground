@@ -10,18 +10,10 @@ warnings.simplefilter("ignore", InsecureRequestWarning)
 # Set the HTTP adapter to use the custom RootCAAdapter
 BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
 
-# exchange_server = 'autodiscover.rosellilaw.com'
-# email = os.getenv('ROSELLILAW_EMAIL_ADDRESS')
-# username = 'Rosellilaw\\rmroselli'
-# password = os.getenv('ROSELLILAW_PASSWORD')
-# exchange_server = 'webmail.wolve.com'
-# username = os.getenv('WOLVE_EMAIL_ADDRESS')
-# email = os.getenv('WOLVE_EMAIL_ADDRESS')
-# password = os.getenv('WOLVE_PASSWORD')
-exchange_server = 'mail.papara.com'
-username = os.getenv('PAPARA_EMAIL_ADDRESS')
-email = os.getenv('PAPARA_EMAIL_ADDRESS')
-password = os.getenv('PAPARA_PASSWORD')
+exchange_server = 'exchange2019.ionos.com'
+username = os.getenv('IONOS_EMAIL_ADDRESS')
+email = os.getenv('IONOS_EMAIL_ADDRESS')
+password = os.getenv('IONOS_PASSWORD')
 print(username, email, password)
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server,
