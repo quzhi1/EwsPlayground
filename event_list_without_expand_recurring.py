@@ -17,10 +17,9 @@ known_master_event_ids = set([])
 for event in events:
     if event.recurrence_id is None:
         print(event.subject, event.start, event.end)
-    elif event.recurrence_id not in known_master_event_ids:
-        master_event = event.recurring_master().refresh()
-        known_master_event_ids.add(master_event.id)
-        print(master_event.subject, master_event.start, master_event.end)
     else:
-        continue
+        master_event = event.recurring_master().refresh()
+        if master_event.id not in known_master_event_ids:
+            known_master_event_ids.add(master_event.id)
+            print(master_event.subject, master_event.start, master_event.end)
 
