@@ -2,10 +2,10 @@ from exchangelib import Credentials, Account, Configuration
 from exchangelib.folders import AllItems
 import os
 
-exchange_server = 'owa.retirement.org'
-username = os.getenv('RETIREMENT_USERNAME')
-email = os.getenv('RETIREMENT_EMAIL_ADDRESS')
-password = os.getenv('RETIREMENT_PASSWORD')
+exchange_server = 'exchange2019.ionos.com'
+username = os.getenv('IONOS_EMAIL_ADDRESS')
+email = os.getenv('IONOS_EMAIL_ADDRESS')
+password = os.getenv('IONOS_PASSWORD')
 
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
