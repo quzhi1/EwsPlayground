@@ -21,5 +21,4 @@ for event in events:
         master_event = event.recurring_master().refresh()
         if master_event.id not in known_master_event_ids:
             known_master_event_ids.add(master_event.id)
-            print(master_event.subject, master_event.start, master_event.end)
-
+            print(master_event)

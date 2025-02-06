@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 import os
 
 exchange_server = 'east.EXCH092.serverdata.net'
-username = os.getenv('INTERMEDIA_EMAIL_ADDRESS')
-password = os.getenv('INTERMEDIA_PASSWORD')
+username = os.getenv('YODA_EMAIL_ADDRESS')
+password = os.getenv('YODA_PASSWORD')
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=username, config=config, access_type='delegate')
@@ -19,10 +19,22 @@ end = EWSDateTime(end_time.year, end_time.month, end_time.day, tzinfo=tz)
 # Query for primary calendar events and auto-expand master event id
 calendar_items = account.calendar.view(start=start, end=end)
 print("Primary calendar events:")
+event_id_to_master_event_id_dict = {}
+recurring_masters = []
 for item in calendar_items:
     if isinstance(item, CalendarItem):
         item = account.calendar.get(id=item.id)
-        print("subject:", item.subject, "start:", item.start, "master_event_id:", item.recurring_master()._id.id)
+        print("subject:", item.subject, "start:", item.start)
+        if item.recurrence_id:
+            recurring_masters.append(item.recurring_master())
+
+master_events = account.fetch(recurring_masters, folder=account.calendar, only_fields=['id'], chunk_size=100)
+generator_progress = 0
+for master_event in master_events:
+    event_id_to_master_event_id_dict[recurring_masters[generator_progress].id] = master_event.id
+    generator_progress += 1
+
+print(event_id_to_master_event_id_dict)
 
 # # Find a secondary calendar
 # secondary_calendar = None
