@@ -10,10 +10,10 @@ warnings.simplefilter("ignore", InsecureRequestWarning)
 # Set the HTTP adapter to use the custom RootCAAdapter
 BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
 
-exchange_server = 'exchange2019.ionos.com'
-username = os.getenv('IONOS_EMAIL_ADDRESS')
-email = os.getenv('IONOS_EMAIL_ADDRESS')
-password = os.getenv('IONOS_PASSWORD')
+exchange_server = 'ews.mail.eu-west-1.awsapps.com'
+username = os.getenv('EVA_USERNAME')
+email = os.getenv('EVA_EMAIL_ADDRESS')
+password = os.getenv('EVA_PASSWORD')
 print(username, email, password)
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server,
