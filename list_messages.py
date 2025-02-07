@@ -58,9 +58,10 @@ def main():
     # messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = account.inbox.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
 
-    for message in messages[0:50]:
-        if isinstance(message, Message):
+    for message in messages:
+        if isinstance(message, Message) and message.in_reply_to:
             print('subject:', message.subject)
+            print('in_reply_to:', message.in_reply_to)
 
 if __name__ == '__main__':
     main()
