@@ -3,10 +3,10 @@ from exchangelib.folders import AllItems
 from exchangelib.properties import ConversationId
 import os
 
-exchange_server = 'exchange2019.ionos.com'
-username = os.getenv('IONOS_EMAIL_ADDRESS')
-email = os.getenv('IONOS_EMAIL_ADDRESS')
-password = os.getenv('IONOS_PASSWORD')
+exchange_server = 'east.EXCH092.serverdata.net'
+username = os.getenv('YODA_EMAIL_ADDRESS')
+email = os.getenv('YODA_EMAIL_ADDRESS')
+password = os.getenv('YODA_PASSWORD')
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=email,
@@ -60,6 +60,7 @@ def main():
 
     for message in messages:
         if isinstance(message, Message) and message.in_reply_to:
+            print('id:', message.id)
             print('subject:', message.subject)
             print('in_reply_to:', message.in_reply_to)
 
