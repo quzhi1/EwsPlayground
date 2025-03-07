@@ -10,16 +10,16 @@ warnings.simplefilter("ignore", InsecureRequestWarning)
 # Set the HTTP adapter to use the custom RootCAAdapter
 BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
 
-exchange_server = 'west.exch090.serverdata.net'
-username = os.getenv('HOSTPILOT_EMAIL_ADDRESS')
-email = os.getenv('HOSTPILOT_EMAIL_ADDRESS')
-password = os.getenv('HOSTPILOT_PASSWORD')
+exchange_server = 'outlook-aws.act.com'
+username = os.getenv('ACT_EMAIL_ADDRESS')
+email = os.getenv('ACT_EMAIL_ADDRESS')
+password = os.getenv('ACT_PASSWORD')
 print(username, email, password)
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server,
                        credentials=credentials, 
-                     #   auth_type=BASIC,
-                       auth_type=NTLM,
+                      # auth_type=BASIC,
+                      # auth_type=NTLM,
 )
 account = Account(primary_smtp_address=email,
                   config=config, access_type='delegate')
