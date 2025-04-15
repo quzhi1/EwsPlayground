@@ -3,10 +3,10 @@ from exchangelib.folders import AllItems
 from exchangelib.properties import ConversationId
 import os
 
-exchange_server = 'east.EXCH092.serverdata.net'
-username = os.getenv('YODA_EMAIL_ADDRESS')
-email = os.getenv('YODA_EMAIL_ADDRESS')
-password = os.getenv('YODA_PASSWORD')
+exchange_server = 'owa.m3cloud.nl'
+username = os.getenv('VCM_EMAIL_ADDRESS')
+email = os.getenv('VCM_EMAIL_ADDRESS')
+password = os.getenv('VCM_PASSWORD')
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=email,
@@ -46,9 +46,18 @@ NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME = [
 ]
 
 def main():
-    all_items_folder = account.root.get_default_folder(AllItems)
+    # all_items_folder = account.root.get_default_folder(AllItems)
+    target_folder = None
+    for folder in account.msg_folder_root.walk():
+        if folder.id == 'AQMkADZmOTkAN2M0ZC1hZmEwLTQ1MWUtYWY5MS00ZTNjNThiN2RiNGUALgAAA6xhWZabYYlIk3D4rxYJONIBADPIg/iUAhxBrdo2sykkLt0AAAIBWgAAAA==':
+            target_folder = folder
+            print('Target folder:', target_folder.id, target_folder.name)
+            break
+    if target_folder is None:
+        print('Target folder not found')
+        return
     # messages = all_items_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
-    messages = all_items_folder.all().order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    # messages = all_items_folder.all().order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = all_items_folder.filter(Q(), is_draft=False, item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # aqs = Q(author__icontains='zhi.q@nylas.com', has_attachments=False) & ~Q(flag=2)
     # query = aqs & Q(is_draft=False, item_class='IPM.Note')
@@ -57,12 +66,10 @@ def main():
     # query = "To:yoda@nylas.info"
     # messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = account.inbox.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
-
+    messages = target_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     for message in messages:
-        if isinstance(message, Message) and message.in_reply_to:
-            print('id:', message.id)
-            print('subject:', message.subject)
-            print('in_reply_to:', message.in_reply_to)
+        print('id:', message.id)
+        print('subject:', message.subject)
 
 if __name__ == '__main__':
     main()
