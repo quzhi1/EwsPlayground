@@ -51,7 +51,7 @@ def main():
     for folder in account.msg_folder_root.walk():
         if folder.id == 'AQMkADZmOTkAN2M0ZC1hZmEwLTQ1MWUtYWY5MS00ZTNjNThiN2RiNGUALgAAA6xhWZabYYlIk3D4rxYJONIBADPIg/iUAhxBrdo2sykkLt0AAAIBWgAAAA==':
             target_folder = folder
-            print('Target folder:', target_folder.id, target_folder.name)
+            print('Target folder:', target_folder.id, target_folder.name, target_folder.CONTAINER_CLASS, target_folder.folder_class)
             break
     if target_folder is None:
         print('Target folder not found')
