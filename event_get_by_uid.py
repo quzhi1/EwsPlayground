@@ -17,7 +17,8 @@ def main():
     email_address = os.getenv('YODA_EMAIL_ADDRESS')
     username = os.getenv('YODA_EMAIL_ADDRESS')
     password = os.getenv('YODA_PASSWORD')
-    event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQBGAAAAAADoKPQ9PfObQLWKHSb9UK7cBwCT/uDqRbzaRZLQpdxtY0TGAAAAAAENAACT/uDqRbzaRZLQpdxtY0TGAAPg7BhbAAA="
+    # event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQBGAAAAAADoKPQ9PfObQLWKHSb9UK7cBwCT/uDqRbzaRZLQpdxtY0TGAAAAAAENAACT/uDqRbzaRZLQpdxtY0TGAAPg7BhbAAA="
+    event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQFRAAgI3YOMH0jAAEYAAAAA6Cj0PT3zm0C1ih0m/VCu3AcAk/7g6kW82kWS0KXcbWNExgAAAAABDQAAk/7g6kW82kWS0KXcbWNExgAD4OwYWwAAEA=="
     run_test(exchange_server, email_address, username, password, event_id)
 
 class GlobalObjectId(ExtendedProperty):
@@ -148,6 +149,7 @@ def create_global_object_id(uid):
         return UID.to_global_object_id(uid)
 
 def run_test(exchange_server, email_address, username, password, event_id):
+    print(f"- Running test for {email_address} on {exchange_server}")
     # Set up connection
     credentials = Credentials(username=username, password=password)
     config = Configuration(server=exchange_server, credentials=credentials)
@@ -168,17 +170,19 @@ def run_test(exchange_server, email_address, username, password, event_id):
     print("Created GlobalObjectId (raw):", created_goid)
     print("Created GlobalObjectId (hex):", created_goid.hex())
     print("Created GlobalObjectId (base64):", base64.b64encode(created_goid).decode())
+    print("\n")
 
     # Try to find the event using our created GlobalObjectId
     try:
         found_event = account.calendar.all().get(global_object_id=created_goid)
-        print("\nFound event using created GlobalObjectId:")
+        print("Found event using created GlobalObjectId:")
         print("Subject:", found_event.subject)
         print("Start:", found_event.start)
         print("ID:", found_event.id)
         print("UID:", found_event.uid)
     except Exception as e:
         print(f"\nError finding event: {str(e)}")
+    print("\n")
 
 if __name__ == "__main__":
     main()
