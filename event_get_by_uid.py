@@ -17,8 +17,8 @@ def main():
     email_address = os.getenv('YODA_EMAIL_ADDRESS')
     username = os.getenv('YODA_EMAIL_ADDRESS')
     password = os.getenv('YODA_PASSWORD')
-    # event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQBGAAAAAADoKPQ9PfObQLWKHSb9UK7cBwCT/uDqRbzaRZLQpdxtY0TGAAAAAAENAACT/uDqRbzaRZLQpdxtY0TGAAPg7BhbAAA="
-    event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQFRAAgI3YOMH0jAAEYAAAAA6Cj0PT3zm0C1ih0m/VCu3AcAk/7g6kW82kWS0KXcbWNExgAAAAABDQAAk/7g6kW82kWS0KXcbWNExgAD4OwYWwAAEA=="
+    # event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQFRAAgI3YOMH0jAAEYAAAAA6Cj0PT3zm0C1ih0m/VCu3AcAk/7g6kW82kWS0KXcbWNExgAAAAABDQAAk/7g6kW82kWS0KXcbWNExgAD4OwYWwAAEA=="
+    event_id = "AAMkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQBGAAAAAADoKPQ9PfObQLWKHSb9UK7cBwCT/uDqRbzaRZLQpdxtY0TGAAAAAAENAACT/uDqRbzaRZLQpdxtY0TGAAPg7BheAAA="
     run_test(exchange_server, email_address, username, password, event_id)
 
 class GlobalObjectId(ExtendedProperty):
@@ -40,6 +40,7 @@ def detect_uid_format(uid):
         'base64' - Base64 encoded format
         'hex_without_dashes' - Hex string without dashes (32 chars)
         'hex_with_dashes' - Hex string with dashes (36 chars)
+        'email' - Email format UID (contains @ symbol)
         'unknown' - Unknown format
     """
     if not isinstance(uid, str):
@@ -77,6 +78,10 @@ def detect_uid_format(uid):
     except:
         pass
     
+    # Check if it's an email format UID
+    if '@' in uid:
+        return 'email'
+    
     return 'unknown'
 
 def normalize_uid(uid, format_type):
@@ -90,24 +95,21 @@ def normalize_uid(uid, format_type):
     Returns:
         str: The normalized UID in hex format without dashes
     """
-    if format_type == 'uuid':
-        # Remove dashes from UUID
-        return uid.replace('-', '')
-    elif format_type == 'hex_with_dashes':
-        # Remove dashes from hex string
-        return uid.replace('-', '')
-    elif format_type == 'base64':
-        # Convert base64 to hex
-        decoded = base64.b64decode(uid)
-        return decoded.hex()
-    elif format_type == 'exchange':
-        # For exchange format, we'll use it as is
-        return uid
-    elif format_type == 'hex':
-        # Already in correct format
-        return uid
-    else:
-        raise ValueError(f"Unsupported UID format: {format_type}")
+    match format_type:
+        case 'uuid':
+            # Remove dashes from UUID
+            return uid.replace('-', '')
+        case 'hex_with_dashes':
+            # Remove dashes from hex string
+            return uid.replace('-', '')
+        case 'base64':
+            # Convert base64 to hex
+            decoded = base64.b64decode(uid)
+            return decoded.hex()
+        case 'exchange' | 'hex' | 'email':
+            return uid
+        case _:
+            return uid
 
 def create_global_object_id(uid):
     """
@@ -144,6 +146,20 @@ def create_global_object_id(uid):
         prefix = bytes.fromhex('040000008200e00074c5b7101a82e00800000000000000000000000000000000000000002d0000007643616c2d55696401000000')
         suffix = bytes.fromhex('00')
         return prefix + uid_bytes + suffix
+    elif format_type == 'email':
+        # For email format, create the GlobalObjectId with fixed length
+        uid_bytes = normalized_uid.encode('ascii')
+        # Exchange seems to use a fixed length of 50 (0x32) for email UIDs
+        length_bytes = bytes.fromhex('32000000')
+        
+        # Create the prefix with fixed length
+        # The structure is:
+        # 040000008200e00074c5b7101a82e0080000000000000000000000000000000000000000320000007643616c2d55696401000000
+        prefix_part1 = bytes.fromhex('040000008200e00074c5b7101a82e0080000000000000000000000000000000000000000')
+        prefix_part2 = bytes.fromhex('7643616c2d55696401000000')
+        suffix = bytes.fromhex('00')
+        
+        return prefix_part1 + length_bytes + prefix_part2 + uid_bytes + suffix
     else:
         # For other formats, use the exchangelib's built-in conversion
         return UID.to_global_object_id(uid)
@@ -163,11 +179,13 @@ def run_test(exchange_server, email_address, username, password, event_id):
     print("Original UID:", event.uid)
     uid_format = detect_uid_format(event.uid)
     print("UID format:", uid_format)
+    print("Original GlobalObjectId (hex):", event.global_object_id.hex())
+    print("Original GlobalObjectId (base64):", base64.b64encode(event.global_object_id).decode())
 
     # Create GlobalObjectId
     created_goid = create_global_object_id(event.uid)
 
-    print("Created GlobalObjectId (raw):", created_goid)
+    # print("Created GlobalObjectId (raw):", created_goid)
     print("Created GlobalObjectId (hex):", created_goid.hex())
     print("Created GlobalObjectId (base64):", base64.b64encode(created_goid).decode())
     print("\n")
