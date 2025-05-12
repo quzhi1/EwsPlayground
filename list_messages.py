@@ -3,10 +3,10 @@ from exchangelib.folders import AllItems
 from exchangelib.properties import ConversationId
 import os
 
-exchange_server = 'owa.m3cloud.nl'
-username = os.getenv('VCM_EMAIL_ADDRESS')
-email = os.getenv('VCM_EMAIL_ADDRESS')
-password = os.getenv('VCM_PASSWORD')
+exchange_server = 'east.EXCH092.serverdata.net'
+username = os.getenv('YODA_EMAIL_ADDRESS')
+email = os.getenv('YODA_EMAIL_ADDRESS')
+password = os.getenv('YODA_PASSWORD')
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server, credentials=credentials)
 account = Account(primary_smtp_address=email,
@@ -46,16 +46,16 @@ NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME = [
 ]
 
 def main():
-    # all_items_folder = account.root.get_default_folder(AllItems)
-    target_folder = None
-    for folder in account.msg_folder_root.walk():
-        if folder.id == 'AQMkADZmOTkAN2M0ZC1hZmEwLTQ1MWUtYWY5MS00ZTNjNThiN2RiNGUALgAAA6xhWZabYYlIk3D4rxYJONIBADPIg/iUAhxBrdo2sykkLt0AAAIBWgAAAA==':
-            target_folder = folder
-            print('Target folder:', target_folder.id, target_folder.name, target_folder.CONTAINER_CLASS, target_folder.folder_class)
-            break
-    if target_folder is None:
-        print('Target folder not found')
-        return
+    all_items_folder = account.root.get_default_folder(AllItems)
+    # target_folder = None
+    # for folder in account.msg_folder_root.walk():
+    #     if folder.id == 'AQMkADZmOTkAN2M0ZC1hZmEwLTQ1MWUtYWY5MS00ZTNjNThiN2RiNGUALgAAA6xhWZabYYlIk3D4rxYJONIBADPIg/iUAhxBrdo2sykkLt0AAAIBWgAAAA==':
+    #         target_folder = folder
+    #         print('Target folder:', target_folder.id, target_folder.name, target_folder.CONTAINER_CLASS, target_folder.folder_class)
+    #         break
+    # if target_folder is None:
+    #     print('Target folder not found')
+    #     return
     # messages = all_items_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = all_items_folder.all().order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = all_items_folder.filter(Q(), is_draft=False, item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
@@ -64,12 +64,26 @@ def main():
     # query = query & Q(conversation_id=ConversationId(id='AAQkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQAQAImvnrfwEytJmqMLIPVAUKM='))
     # query = Q(to_recipients__icontains='yoda@nylas.info')
     # query = "To:yoda@nylas.info"
+    query = "author:zhi.q@nylas.com"
     # messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = account.inbox.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
-    messages = target_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    # messages = target_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     for message in messages:
         print('id:', message.id)
         print('subject:', message.subject)
+        break
+    print('--------------------------------')
+    messages = all_items_folder.filter(author__icontains='zhi.q@nylas.com').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    for message in messages:
+        print('id:', message.id)
+        print('subject:', message.subject)
+        print('author:', message.author)
+        print('sender:', message.sender)
+        if hasattr(message, 'from_'):
+            print('from:', message.from_)
+        print('--------------------------------')
+        break
 
 if __name__ == '__main__':
     main()
