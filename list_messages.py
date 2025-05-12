@@ -64,16 +64,19 @@ def main():
     # query = query & Q(conversation_id=ConversationId(id='AAQkADZhMzdkMDEzLWU1YTgtNDdiOC04ZmY4LTA4NWIzY2YzZTY1NQAQAImvnrfwEytJmqMLIPVAUKM='))
     # query = Q(to_recipients__icontains='yoda@nylas.info')
     # query = "To:yoda@nylas.info"
-    query = "author:zhi.q@nylas.com"
+    query = "from:\"zhi.q@nylas.com\""
     # messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = account.inbox.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     # messages = target_folder.filter(item_class='IPM.Note').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
+    print('--------------------------------')
+    print('Using query:', query)
     messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     for message in messages:
         print('id:', message.id)
         print('subject:', message.subject)
         break
     print('--------------------------------')
+    print('Using native filter: author__icontains="zhi.q@nylas.com"')
     messages = all_items_folder.filter(author__icontains='zhi.q@nylas.com').order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
     for message in messages:
         print('id:', message.id)
@@ -82,7 +85,6 @@ def main():
         print('sender:', message.sender)
         if hasattr(message, 'from_'):
             print('from:', message.from_)
-        print('--------------------------------')
         break
 
 if __name__ == '__main__':
