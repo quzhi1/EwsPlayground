@@ -24,7 +24,7 @@ recurring_masters = []
 for item in calendar_items:
     if isinstance(item, CalendarItem):
         item = account.calendar.get(id=item.id)
-        print("subject:", item.subject, "start:", item.start)
+        print("subject:", item.subject, "start:", item.start, "resources:", item.resources)
         if item.recurrence_id:
             recurring_masters.append(item.recurring_master())
 
