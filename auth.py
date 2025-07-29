@@ -10,10 +10,10 @@ warnings.simplefilter("ignore", InsecureRequestWarning)
 # Set the HTTP adapter to use the custom RootCAAdapter
 BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
 
-exchange_server = 'east.EXCH092.serverdata.net'
-username = os.getenv('YODA_EMAIL_ADDRESS')
-email = os.getenv('YODA_EMAIL_ADDRESS')
-password = os.getenv('YODA_PASSWORD')
+exchange_server = 'west.exch480.serverdata.net'
+username = os.getenv('ABC_SENIORS_EMAIL_ADDRESS')
+email = os.getenv('ABC_SENIORS_EMAIL_ADDRESS')
+password = os.getenv('ABC_SENIORS_PASSWORD')
 print(username, email, password)
 credentials = Credentials(username=username, password=password)
 config = Configuration(server=exchange_server,
