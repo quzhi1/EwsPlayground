@@ -26,3 +26,10 @@ account = Account(primary_smtp_address=email,
 
 print(account.inbox.name)
 print(config.auth_type)
+# List all contacts
+limit = 3
+for contact in account.contacts.all():
+    print(contact.id, contact.display_name)
+    limit -= 1
+    if limit <= 0:
+        break
