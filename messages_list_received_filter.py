@@ -49,6 +49,7 @@ NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME = [
 def main():
     all_items_folder = account.root.get_default_folder(AllItems)
     query = Q(datetime_received__lt=datetime.fromtimestamp(int(1752271200), tz=timezone.utc), datetime_received__gt=datetime.fromtimestamp(int(1752184800), tz=timezone.utc))
+    # query = query & (Q(item_class='IPM.Note') | Q(item_class='REPORT.IPM.Note.NDR'))
     print('--------------------------------')
     print('Using query:', query)
     messages = all_items_folder.filter(query).order_by('-datetime_received').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
@@ -56,6 +57,7 @@ def main():
         print('id:', message.message_id)
         print('subject:', message.subject)
         print('datetime_received:', message.datetime_received)
+        print('item_class:', message.item_class)
     print('--------------------------------')
     print('Checking a certain message in range')
     messages = all_items_folder.filter(message_id='<bcfa1003ee7e4b448182f3e9037c633a@berlinovo.de>').only(*NECESSARY_MESSAGE_FIELDS_WITHOUT_MIME)
@@ -63,6 +65,7 @@ def main():
         print('id:', message.message_id)
         print('subject:', message.subject)
         print('datetime_received:', message.datetime_received)
+        print('item_class:', message.item_class)
 
 if __name__ == '__main__':
     main()
